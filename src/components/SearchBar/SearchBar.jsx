@@ -1,7 +1,5 @@
 // ============================================
-// SearchBar.jsx — Arama Formu Bileşeni
-// Öğrenci 1: UI & CSS (geçmiş paneli eklendi)
-// Öğrenci 3: useState, validasyon, arama geçmişi
+// SearchBar.jsx — Search Form Component
 // ============================================
 import { useState } from 'react'
 import { validateSearchForm } from '../../utils/validators'
@@ -9,17 +7,17 @@ import { useFlights } from '../../hooks/useFlights'
 import { useSearchHistory } from '../../hooks/useSearchHistory'
 import styles from './SearchBar.module.css'
 
-// Bugünün tarihi (input min değeri için)
+// Today's date (for input min value)
 const todayStr = new Date().toISOString().split('T')[0]
 
-// Tarihi okunabilir formata çevirir: "2025-06-15" → "15 Haz"
+// Formats date to readable format: "2025-06-15" → "15 Haz"
 function formatHistoryDate(dateStr) {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })
 }
 
 export default function SearchBar() {
-  // Form state'i — Öğrenci 3
+  // Form state
   const [formData, setFormData] = useState({ origin: '', destination: '', date: '' })
   const [errors,   setErrors]   = useState({})
   const [touched,  setTouched]  = useState({})
@@ -27,7 +25,7 @@ export default function SearchBar() {
   const { fetchFlights }                          = useFlights()
   const { history, saveSearch, removeSearch, clearHistory } = useSearchHistory()
 
-  // Input değişimi
+  // Input change handler
   function handleChange(e) {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -37,7 +35,7 @@ export default function SearchBar() {
     }
   }
 
-  // Blur — touched işaretle
+  // Blur — mark field as touched
   function handleBlur(e) {
     const { name } = e.target
     setTouched(prev => ({ ...prev, [name]: true }))
@@ -45,7 +43,7 @@ export default function SearchBar() {
     setErrors(prev => ({ ...prev, [name]: errs[name] }))
   }
 
-  // Form gönderimi
+  // Form submission
   function handleSubmit(e) {
     e.preventDefault()
     setTouched({ origin: true, destination: true, date: true })
@@ -53,11 +51,11 @@ export default function SearchBar() {
     setErrors(validationErrors)
     if (Object.keys(validationErrors).length > 0) return
 
-    saveSearch(formData)   // ← Öğrenci 3: geçmişe kaydet
+    saveSearch(formData)   // Save to search history
     fetchFlights(formData)
   }
 
-  // Geçmişten tekrar ara — formu doldur ve hemen ara
+  // Re-search from history — fill form and search immediately
   function handleHistoryClick(item) {
     const filled = { origin: item.origin, destination: item.destination, date: item.date }
     setFormData(filled)
@@ -73,11 +71,11 @@ export default function SearchBar() {
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>Uçuş Ara</h2>
 
-          {/* HTML form — Öğrenci 1 UI */}
+          {/* HTML form */}
           <form onSubmit={handleSubmit} noValidate>
             <div className={styles.fields}>
 
-              {/* Kalkış */}
+              {/* Origin */}
               <div className={styles.fieldGroup}>
                 <label htmlFor="origin" className={styles.label}>
                   <span className={styles.labelIcon}>🛫</span> Nereden
@@ -95,7 +93,7 @@ export default function SearchBar() {
                 )}
               </div>
 
-              {/* Swap butonu */}
+              {/* Swap button */}
               <button
                 type="button" className={styles.swapBtn}
                 onClick={() => setFormData(prev => ({
@@ -104,7 +102,7 @@ export default function SearchBar() {
                 aria-label="Kalkış ve varışı yer değiştir"
               >⇄</button>
 
-              {/* Varış */}
+              {/* Destination */}
               <div className={styles.fieldGroup}>
                 <label htmlFor="destination" className={styles.label}>
                   <span className={styles.labelIcon}>🛬</span> Nereye
@@ -122,7 +120,7 @@ export default function SearchBar() {
                 )}
               </div>
 
-              {/* Tarih */}
+              {/* Date */}
               <div className={styles.fieldGroup}>
                 <label htmlFor="date" className={styles.label}>
                   <span className={styles.labelIcon}>📅</span> Tarih
@@ -139,7 +137,7 @@ export default function SearchBar() {
                 )}
               </div>
 
-              {/* Arama Butonu */}
+              {/* Search Button */}
               <button type="submit" className={styles.searchBtn}>
                 <span>Uçuş Ara</span>
                 <span className={styles.btnIcon}>→</span>
@@ -147,11 +145,11 @@ export default function SearchBar() {
             </div>
           </form>
 
-          {/* ── Arama Geçmişi Paneli (Öğrenci 1 UI / Öğrenci 3 state) ── */}
+          {/* ── Search History Panel ── */}
           {history.length > 0 && (
             <div className={styles.history}>
 
-              {/* Başlık + Tümünü temizle */}
+              {/* Title + Clear all */}
               <div className={styles.historyHeader}>
                 <span className={styles.historyTitle}>Son Aramalar</span>
                 <button
@@ -163,12 +161,12 @@ export default function SearchBar() {
                 </button>
               </div>
 
-              {/* Geçmiş öğeleri — .map() ile render */}
+              {/* History items — rendered with .map() */}
               <div className={styles.historyList}>
                 {history.map(item => (
                   <div key={item.id} className={styles.historyItem}>
 
-                    {/* Tıklanabilir rota alanı */}
+                    {/* Clickable route area */}
                     <button
                       className={styles.historyBtn}
                       onClick={() => handleHistoryClick(item)}
@@ -187,7 +185,7 @@ export default function SearchBar() {
                       )}
                     </button>
 
-                    {/* Tekli sil */}
+                    {/* Remove single item */}
                     <button
                       className={styles.historyRemove}
                       onClick={(e) => { e.stopPropagation(); removeSearch(item.id) }}

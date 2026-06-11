@@ -1,7 +1,5 @@
 // ============================================
-// FlightCard.jsx — Tek Uçuş Kartı
-// Öğrenci 1: UI & CSS (expandable panel eklendi)
-// Öğrenci 3: addTracked / isTracked prop mantığı
+// FlightCard.jsx — Single Flight Card Component
 // Props: flight (object)
 // ============================================
 import { useState } from 'react'
@@ -9,7 +7,7 @@ import { useAppContext } from '../../context/AppContext'
 import { formatPrice, formatDuration } from '../../utils/validators'
 import styles from './FlightCard.module.css'
 
-// Tarih formatı: "08:30"
+// Time format: "08:30"
 function formatTime(isoString) {
   if (!isoString) return '--:--'
   return new Date(isoString).toLocaleTimeString('tr-TR', {
@@ -18,7 +16,7 @@ function formatTime(isoString) {
   })
 }
 
-// Detay satırı — ikon + etiket + değer
+// Detail row — icon + label + value
 function DetailRow({ icon, label, value, highlight }) {
   return (
     <div className={styles.detailRow}>
@@ -32,11 +30,11 @@ function DetailRow({ icon, label, value, highlight }) {
 }
 
 export default function FlightCard({ flight }) {
-  // Öğrenci 3: context'ten state fonksiyonlarını al
+  // Get state functions from context
   const { addTracked, removeTracked, isTracked } = useAppContext()
   const tracked = isTracked(flight.id)
 
-  // Öğrenci 3: expand/collapse local state'i
+  // Expand/collapse local state
   const [expanded, setExpanded] = useState(false)
 
   function handleTrackToggle() {

@@ -1,12 +1,10 @@
 // ============================================
-// Toast.jsx — Bildirim Bileşeni
-// Öğrenci 1 sorumluluğu (UI & animasyon)
-// Öğrenci 3: useToast hook'u ile beslenir
+// Toast.jsx — Notification Component
 // ============================================
 import { useEffect, useState } from 'react'
 import styles from './Toast.module.css'
 
-// İkon haritası — her type için ayrı sembol
+// Icon map — different symbol for each type
 const ICONS = {
   success: '✓',
   error:   '✕',
@@ -14,24 +12,24 @@ const ICONS = {
   info:    'ℹ',
 }
 
-// --- Tek Toast --- //
+// --- Single Toast --- //
 function Toast({ id, message, type = 'info', duration = 3000, onRemove }) {
-  const [visible, setVisible] = useState(false)   // mount sonrası slide-in
-  const [leaving, setLeaving] = useState(false)   // slide-out öncesi
+  const [visible, setVisible] = useState(false)   // slide-in after mount
+  const [leaving, setLeaving] = useState(false)   // before slide-out
 
-  // Mount → kısa gecikme → görünür yap (CSS transition tetiklensin)
+  // Mount → short delay → make visible (trigger CSS transition)
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 20)
     return () => clearTimeout(t)
   }, [])
 
-  // Çıkış animasyonu: önce leaving=true (slide-out), sonra kaldır
+  // Exit animation: set leaving=true (slide-out), then remove
   function handleRemove() {
     setLeaving(true)
     setTimeout(() => onRemove(id), 280)
   }
 
-  // Progress bar'ın bitmesiyle de tetiklenebilir
+  // Can also be triggered when progress bar completes
   useEffect(() => {
     const t = setTimeout(handleRemove, duration - 300) // animasyon payı
     return () => clearTimeout(t)
@@ -48,27 +46,27 @@ function Toast({ id, message, type = 'info', duration = 3000, onRemove }) {
       role="alert"
       aria-live="polite"
     >
-      {/* Sol renk çubuğu */}
+      {/* Left color bar */}
       <span className={styles.bar} />
 
-      {/* İkon */}
+      {/* Icon */}
       <span className={styles.icon} aria-hidden="true">
         {ICONS[type]}
       </span>
 
-      {/* Mesaj */}
+      {/* Message */}
       <p className={styles.message}>{message}</p>
 
-      {/* Kapat butonu */}
+      {/* Close button */}
       <button
         className={styles.close}
         onClick={handleRemove}
-        aria-label="Bildirimi kapat"
+        aria-label="Close notification"
       >
         ✕
       </button>
 
-      {/* Progress bar — süre dolunca daralır */}
+      {/* Progress bar — shrinks as time runs out */}
       <div
         className={styles.progress}
         style={{ animationDuration: `${duration}ms` }}
@@ -77,7 +75,7 @@ function Toast({ id, message, type = 'info', duration = 3000, onRemove }) {
   )
 }
 
-// --- Toast Container — sağ üste sabitlenmiş liste --- //
+// --- Toast Container — fixed list in top-right corner --- //
 export function ToastContainer({ toasts, onRemove }) {
   if (toasts.length === 0) return null
 

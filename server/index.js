@@ -28,11 +28,10 @@ app.get('/api/flights/search', async (req, res) => {
 	}
 
 	try {
-		// Step 1: Obtain the Airport Entity ID
-		const [originData, destinationData] = await Promise.all([
-			getAirportEntityId(origin),
-			getAirportEntityId(destination),
-		])
+		// Step 1: Obtain the Airport Entity ID sequentially to prevent rate limiting (Too many requests)
+		const originData = await getAirportEntityId(origin)
+		await new Promise(resolve => setTimeout(resolve, 1000))
+		const destinationData = await getAirportEntityId(destination)
 
 		if (!originData || !destinationData) {
 			return res.status(404).json({ error: 'Airport not found.' })
@@ -40,7 +39,7 @@ app.get('/api/flights/search', async (req, res) => {
 
 		// Step 2: Search for flights
 		const flightResponse = await axios.get(
-			'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlightsComplete',
+			'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights',
 			{
 				params: {
 					originSkyId: originData.skyId,
@@ -90,9 +89,10 @@ async function getAirportEntityId(query) {
 				},
 			},
 		)
-		const result = response.data?.data?.[0]
-		return result ? { skyId: result.skyId, entityId: result.entityId } : null
-	} catch {
+		const flightParams = response.data?.data?.[0]?.navigation?.relevantFlightParams
+		return flightParams ? { skyId: flightParams.skyId, entityId: flightParams.entityId } : null
+	} catch (error) {
+		console.error('Airport search error:', error.response?.data || error.message)
 		return null
 	}
 }

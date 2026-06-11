@@ -88,8 +88,14 @@ async function getAirportEntityId(query, locale = 'tr-TR') {
 			},
 		)
 		const result = response.data?.data?.[0]
+		// Safe fallback lookup key
+		const flightParams = result?.navigation?.relevantFlightParams
+		if (flightParams) {
+			return { skyId: flightParams.skyId, entityId: flightParams.entityId }
+		}
 		return result ? { skyId: result.skyId, entityId: result.entityId } : null
-	} catch {
+	} catch (error) {
+		console.error('Airport search error:', error.response?.data || error.message)
 		return null
 	}
 }
@@ -129,16 +135,19 @@ app.get('/api/airports', async (req, res) => {
 		)
 
 		// Normalize results for frontend consumption
-		const airports = (response.data?.data || []).map(item => ({
-			skyId: item.skyId,
-			entityId: item.entityId,
-			name: item.presentation?.title || item.name || '',
-			subtitle: item.presentation?.subtitle || '',
-			iata: item.navigation?.relevantFlightParams?.skyId || item.skyId || '',
-			city: item.presentation?.subtitle?.split(',')[0]?.trim() || '',
-			country: item.presentation?.subtitle?.split(',')[1]?.trim() || '',
-			type: item.navigation?.entityType || 'AIRPORT',
-		}))
+		const airports = (response.data?.data || []).map(item => {
+			const flightParams = item.navigation?.relevantFlightParams
+			return {
+				skyId: flightParams?.skyId || item.skyId || '',
+				entityId: flightParams?.entityId || item.entityId || '',
+				name: item.presentation?.title || item.name || '',
+				subtitle: item.presentation?.subtitle || '',
+				iata: flightParams?.skyId || item.skyId || '',
+				city: item.presentation?.subtitle?.split(',')[0]?.trim() || '',
+				country: item.presentation?.subtitle?.split(',')[1]?.trim() || '',
+				type: item.navigation?.entityType || 'AIRPORT',
+			}
+		})
 
 		res.json({ status: true, data: airports })
 	} catch (error) {
@@ -186,11 +195,10 @@ app.get('/api/flights/search', async (req, res) => {
 	const resolvedCountryCode = localeConfig.countryCode
 
 	try {
-		// Step 1: Obtain Airport Entity IDs
-		const [originData, destinationData] = await Promise.all([
-			getAirportEntityId(origin, resolvedLocale),
-			getAirportEntityId(destination, resolvedLocale),
-		])
+		// Step 1: Obtain the Airport Entity ID sequentially to prevent rate limiting (Too many requests)
+		const originData = await getAirportEntityId(origin, resolvedLocale)
+		await new Promise(resolve => setTimeout(resolve, 1000))
+		const destinationData = await getAirportEntityId(destination, resolvedLocale)
 
 		if (!originData || !destinationData) {
 			return res.status(404).json({ error: 'Airport not found.' })

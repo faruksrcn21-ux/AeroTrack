@@ -1,0 +1,188 @@
+/* ============================================
+   SkeletonCard.module.css — Öğrenci 1
+   FlightCard.module.css ile aynı layout boyutları.
+   Değişiklik: içerik yok, shimmer animasyonu var.
+   ============================================ */
+
+/* --- Shimmer keyframe --- */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+/* --- Temel kemik sınıfı (tüm placeholder'lar bunu alır) --- */
+.bone {
+  border-radius: 6px;
+  /* Shimmer: açık baz + parlak geçen şerit */
+  background: linear-gradient(
+    90deg,
+    var(--color-border)       0%,
+    var(--color-surface-2)   40%,
+    var(--color-border)      60%,
+    var(--color-border)     100%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* --- Kart gövdesi — FlightCard.module.css ile özdeş --- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  /* Her kart biraz farklı zamanda başlasın: nth-child ile dışarıdan verilir */
+}
+
+/* Staggered delay: ilk 4 kartta sıralı gecikme */
+.card:nth-child(1) .bone { animation-delay: 0s; }
+.card:nth-child(2) .bone { animation-delay: 0.1s; }
+.card:nth-child(3) .bone { animation-delay: 0.2s; }
+.card:nth-child(4) .bone { animation-delay: 0.3s; }
+
+/* --- Header --- */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.airline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Logo kutusu — FlightCard'daki airlineLogo ile aynı boyut */
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.airlineTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.airlineName {
+  width: 120px;
+  height: 14px;
+}
+
+.flightNum {
+  width: 60px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+.priceGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.price {
+  width: 90px;
+  height: 20px;
+}
+
+.priceLabel {
+  width: 50px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+/* --- Rota --- */
+.route {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.routePoint {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.routeRight {
+  align-items: flex-end;
+}
+
+/* IATA kodu placeholder — büyük metin */
+.routeCode {
+  width: 48px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+.routeTime {
+  width: 36px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+.routeCity {
+  width: 52px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+.routeMiddle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.duration {
+  width: 48px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+/* Yatay çizgi placeholder */
+.line {
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.stops {
+  width: 40px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+/* --- Footer --- */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* "Direkt Uçuş" rozet placeholder */
+.tag {
+  width: 80px;
+  height: 22px;
+  border-radius: 99px;
+}
+
+/* "Takip Et" buton placeholder */
+.btn {
+  width: 100px;
+  height: 36px;
+  border-radius: var(--radius-md);
+}

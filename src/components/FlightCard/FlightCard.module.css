@@ -1,0 +1,368 @@
+/* FlightCard.module.css — Öğrenci 1 */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-card);
+}
+
+.card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.cardTracked {
+  border-color: rgba(0,229,160,0.4) !important;
+  box-shadow: var(--shadow-card), 0 0 20px rgba(0,229,160,0.1) !important;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.airline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.airlineLogo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.airlineLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.airlineInitial {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.airlineName {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.flightNumber {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.price {
+  text-align: right;
+}
+
+.priceAmount {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.priceLabel {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+/* Route */
+.route {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.routePoint {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.routePointRight {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.routeCode {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.routeTime {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+.routeCity {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.routeLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.routeDuration {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.routeBar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.routeBarLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-border), var(--color-accent), var(--color-border));
+}
+
+.routePlane {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  background: var(--color-bg);
+  padding: 0 4px;
+}
+
+.routeStops {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Footer sol — tag + expand butonu yan yana */
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tagDirect {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-success);
+  background: rgba(0,229,160,0.08);
+  border: 1px solid rgba(0,229,160,0.25);
+  padding: 3px 10px;
+  border-radius: var(--radius-xl);
+}
+
+/* Takip butonu */
+.trackBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.trackBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-glow);
+}
+
+.trackBtnActive {
+  background: rgba(0,229,160,0.1) !important;
+  border-color: rgba(0,229,160,0.4) !important;
+  color: var(--color-success) !important;
+}
+
+/* ── Expand butonu ── */
+.expandBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.expandBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.expandChevron {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
+/* ── Expandable detay paneli ── */
+.details {
+  /* max-height trick: kapalıyken 0, açıkken büyük bir değer */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity    0.25s ease;
+  opacity: 0;
+}
+
+.detailsOpen {
+  max-height: 400px;  /* içerik bu değeri asla geçmez */
+  opacity: 1;
+}
+
+.detailsInner {
+  padding: 20px 0 4px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 20px;
+}
+
+/* 3 kolonlu grid */
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.detailsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailsColTitle {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Tek detay satırı */
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.detailIcon {
+  font-size: 0.85rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.detailLabel {
+  color: var(--color-text-muted);
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.detailValue {
+  color: var(--color-text);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+/* Direkt gibi pozitif değerleri vurgula */
+.detailHighlight {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+/* Dipnot */
+.detailsNote {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  line-height: 1.5;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Expanded kart hover'ı bastır — zaten açık */
+.cardExpanded:hover {
+  transform: none;
+}
+
+/* Responsive — tablet ve altı: 3 kolon → 1 kolon */
+@media (max-width: 640px) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

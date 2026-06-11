@@ -1,0 +1,156 @@
+/* ============================================
+   Toast.module.css — Öğrenci 1
+   ============================================ */
+
+/* --- Slide-in / slide-out keyframe'leri --- */
+@keyframes slideIn {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0);    opacity: 1; max-height: 80px; margin-bottom: 10px; }
+  to   { transform: translateX(110%); opacity: 0; max-height: 0;    margin-bottom: 0;   }
+}
+
+@keyframes progressShrink {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* --- Container — sağ üst köşe, sabit --- */
+.container {
+  position: fixed;
+  top: 80px;        /* Navbar yüksekliği kadar aşağı */
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 320px;
+  pointer-events: none; /* Arkadaki tıklamaları engelleme */
+}
+
+/* --- Tek toast kutusu --- */
+.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  pointer-events: all;
+
+  /* Başlangıç: görünmez ve sağda */
+  opacity: 0;
+  transform: translateX(110%);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity   0.28s ease;
+}
+
+/* Görünür durum — JS mount sonrası eklenir */
+.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Çıkış animasyonu */
+.leaving {
+  animation: slideOut 0.28s ease forwards;
+}
+
+/* --- Sol renk çubuğu --- */
+.bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* --- Type renkleri --- */
+.success { border-color: rgba(0, 229, 160, 0.25); }
+.success .bar     { background: var(--color-success); }
+.success .icon    { color: var(--color-success); }
+
+.error   { border-color: rgba(255, 71, 87, 0.25); }
+.error   .bar     { background: var(--color-danger); }
+.error   .icon    { color: var(--color-danger); }
+
+.warning { border-color: rgba(255, 165, 0, 0.25); }
+.warning .bar     { background: #ffa500; }
+.warning .icon    { color: #ffa500; }
+
+.info    { border-color: rgba(0, 212, 255, 0.25); }
+.info    .bar     { background: var(--color-accent); }
+.info    .icon    { color: var(--color-accent); }
+
+/* --- İkon --- */
+.icon {
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+/* --- Mesaj metni --- */
+.message {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* --- Kapat butonu --- */
+.close {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color var(--transition), background var(--transition);
+  line-height: 1;
+}
+
+.close:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+/* --- Progress bar — altta, süresiyle daralır --- */
+.progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-border);
+  transform-origin: left;
+  animation: progressShrink linear forwards;
+}
+
+/* Progress rengi type'a göre */
+.success .progress { background: rgba(0, 229, 160, 0.4); }
+.error   .progress { background: rgba(255, 71, 87, 0.4);  }
+.warning .progress { background: rgba(255, 165, 0, 0.4);  }
+.info    .progress { background: rgba(0, 212, 255, 0.4);  }
+
+/* --- Mobil --- */
+@media (max-width: 400px) {
+  .container {
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+}

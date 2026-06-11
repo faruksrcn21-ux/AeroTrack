@@ -1,7 +1,6 @@
 // ============================================
-// App.jsx — Ana Uygulama Bileşeni
-// Öğrenci 3 sorumluluğu (entegrasyon)
-// Tüm bileşenleri bir araya getirir
+// App.jsx — Main Application Component
+// Brings all components together
 // ============================================
 import { useAppContext } from './context/AppContext'
 import Navbar      from './components/Navbar/Navbar'
@@ -11,38 +10,36 @@ import FlightCard  from './components/FlightCard/FlightCard'
 import TrackedList from './components/TrackedList/TrackedList'
 import { SkeletonList }   from './components/FlightCard/SkeletonCard'
 import { ToastContainer } from './components/Toast/Toast'
-import FilterBar          from './components/FilterBar/FilterBar'
-import { useFlightFilter } from './hooks/useFlightFilter'
 
 export default function App() {
-  // Öğrenci 3: Global state'i context'ten al
+  // Get global state from context
   const { flights, isLoading, error, hasSearched, toasts, removeToast } = useAppContext()
 
   return (
     <div>
-      {/* Toast bildirimleri — sağ üstte, tüm sayfanın üzerinde */}
+      {/* Toast notifications — top-right, above all content */}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      {/* Öğrenci 1: Navbar — takip sayısını gösterir */}
+      {/* Navbar — shows tracked flight count */}
       <Navbar />
 
       <main>
-        {/* Öğrenci 1: Hero — dekoratif başlık */}
+        {/* Hero — decorative header */}
         <Hero />
 
-        {/* Öğrenci 1 UI / Öğrenci 2 API / Öğrenci 3 validasyon */}
+        {/* Search form with validation and API integration */}
         <SearchBar />
 
-        {/* Öğrenci 3: Takip listesi — state değişince anında render */}
+        {/* Tracked flights list — re-renders on state change */}
         <TrackedList />
 
-        {/* Sonuç Alanı */}
+        {/* Results Section */}
         <section>
           <div className="container">
 
-            {/* Yükleniyor — Spinner yerine Skeleton cards (Öğrenci 1) */}
+            {/* Loading — skeleton cards instead of spinner */}
             {isLoading && <SkeletonList count={4} />}
 
-            {/* Hata Durumu */}
+            {/* Error State */}
             {error && !isLoading && (
               <div style={{
                 textAlign: 'center',
@@ -58,7 +55,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Boş Sonuç Durumu */}
+            {/* Empty Results State */}
             {!isLoading && !error && hasSearched && flights.length === 0 && (
               <div style={{
                 textAlign: 'center',
@@ -72,7 +69,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Uçuş Kartları Listesi — .map() ile render */}
+            {/* Flight Cards List — rendered with .map() */}
             {!isLoading && flights.length > 0 && (
               <>
                 <div style={{
@@ -97,14 +94,14 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Öğrenci 1: FlightCard — Props ile veri aktarımı */}
+                {/* FlightCard — data passed via props */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {flights.map((flight, index) => (
                     <div
                       key={flight.id}
                       style={{ animationDelay: `${index * 0.08}s` }}
                     >
-                      {/* flight prop'u ile veri aktarımı */}
+                      {/* Flight data via prop */}
                       <FlightCard flight={flight} />
                     </div>
                   ))}

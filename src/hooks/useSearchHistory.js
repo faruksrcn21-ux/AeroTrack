@@ -1,14 +1,13 @@
 // ============================================
-// useSearchHistory.js — Arama Geçmişi Hook'u
-// Öğrenci 3 sorumluluğu
-// Son 5 aramayı localStorage'da tutar
+// useSearchHistory.js — Search History Hook
+// Stores the last 5 searches in localStorage
 // ============================================
 import { useState, useCallback } from 'react'
 
 const STORAGE_KEY = 'aerotrack_history'
 const MAX_ITEMS   = 5
 
-// localStorage'dan güvenli okuma
+// Safe read from localStorage
 function loadHistory() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -21,10 +20,10 @@ function loadHistory() {
 export function useSearchHistory() {
   const [history, setHistory] = useState(loadHistory)
 
-  // Yeni arama kaydet — aynı rota zaten varsa önce çıkar, başa ekle
+  // Save new search — removes duplicate routes, prepends to list
   const saveSearch = useCallback((formData) => {
     setHistory(prev => {
-      // Aynı kalkış + varış kombinasyonu varsa çıkar (date farklı olabilir)
+      // Remove existing entry with same origin + destination
       const filtered = prev.filter(
         item => !(
           item.origin.toLowerCase()      === formData.origin.toLowerCase() &&
@@ -40,14 +39,14 @@ export function useSearchHistory() {
         searchedAt:  new Date().toISOString(),
       }
 
-      // En fazla MAX_ITEMS tut
+      // Keep at most MAX_ITEMS
       const updated = [newEntry, ...filtered].slice(0, MAX_ITEMS)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
       return updated
     })
   }, [])
 
-  // Tekli sil
+  // Remove single entry
   const removeSearch = useCallback((id) => {
     setHistory(prev => {
       const updated = prev.filter(item => item.id !== id)
@@ -56,7 +55,7 @@ export function useSearchHistory() {
     })
   }, [])
 
-  // Tümünü temizle
+  // Clear all history
   const clearHistory = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY)
     setHistory([])

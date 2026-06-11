@@ -1,6 +1,5 @@
 // ============================================
-// useToast.js — Toast Bildirim Hook'u
-// Öğrenci 3 sorumluluğu
+// useToast.js — Toast Notification Hook
 // ============================================
 import { useState, useCallback } from 'react'
 
@@ -9,12 +8,12 @@ let nextId = 0
 export function useToast() {
   const [toasts, setToasts] = useState([])
 
-  // Yeni toast ekle — type: 'success' | 'error' | 'info' | 'warning'
+  // Add a new toast — type: 'success' | 'error' | 'info' | 'warning'
   const addToast = useCallback(({ message, type = 'info', duration = 3000 }) => {
     const id = ++nextId
     setToasts(prev => [...prev, { id, message, type, duration }])
 
-    // Süre dolunca otomatik kaldır
+    // Auto-remove after duration
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id))
     }, duration)
@@ -22,12 +21,12 @@ export function useToast() {
     return id
   }, [])
 
-  // Manuel kaldır (kullanıcı çarpıya basarsa)
+  // Manually remove (when user clicks dismiss)
   const removeToast = useCallback((id) => {
     setToasts(prev => prev.filter(t => t.id !== id))
   }, [])
 
-  // Kısayol fonksiyonlar
+  // Shortcut functions
   const toast = {
     success: (message, opts = {}) => addToast({ message, type: 'success', ...opts }),
     error:   (message, opts = {}) => addToast({ message, type: 'error',   ...opts }),

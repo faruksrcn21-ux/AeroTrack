@@ -1,7 +1,5 @@
 // ============================================
-// TrackedList.jsx — Takip Listesi Paneli
-// Öğrenci 1: UI & CSS
-// Öğrenci 3: removeTracked state mantığı
+// TrackedList.jsx — Tracked Flights Panel
 // ============================================
 import { useAppContext } from '../../context/AppContext'
 import { formatPrice, formatDuration } from '../../utils/validators'
@@ -15,10 +13,10 @@ function formatTime(isoString) {
 }
 
 export default function TrackedList() {
-  // Öğrenci 3: context'ten takip listesi ve removeTracked al
+  // Get tracked flights list and removal function from context
   const { trackedFlights, removeTracked } = useAppContext()
 
-  // Takip yoksa bileşeni render etme
+  // Don't render if no tracked flights
   if (trackedFlights.length === 0) return null
 
   return (
@@ -76,7 +74,7 @@ export default function TrackedList() {
                 </span>
               </div>
 
-              {/* Silme butonu — Öğrenci 3: removeTracked */}
+              {/* Remove button */}
               <button
                 className={styles.removeBtn}
                 onClick={() => removeTracked(flight.id)}

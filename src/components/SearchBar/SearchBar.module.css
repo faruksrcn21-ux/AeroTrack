@@ -305,4 +305,33 @@
 .historyRemove:hover {
   color: var(--color-danger);
 }
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
 
+.tripToggle {
+  display: flex;
+  gap: 0.3rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+
+.tripBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tripBtnActive {
+  background: #6c63ff;
+  color: #fff;
+}

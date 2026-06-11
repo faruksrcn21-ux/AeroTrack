@@ -25,22 +25,8 @@ export default function Hero() {
 
         <p className={styles.subtitle}>
           Yüzlerce havayolu arasından en uygun biletleri bulun,
-          anlık fiyat değişikliklerini takip edin.
+          anlık fiyat değişiklerini takip edin.
         </p>
-
-        {/* İstatistikler */}
-        <div className={styles.stats}>
-          {[
-            { value: '500+', label: 'Havalimanı' },
-            { value: '200+', label: 'Havayolu' },
-            { value: '24/7', label: 'Canlı Takip' },
-          ].map(stat => (
-            <div key={stat.label} className={styles.statItem}>
-              <span className={styles.statValue}>{stat.value}</span>
-              <span className={styles.statLabel}>{stat.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   )

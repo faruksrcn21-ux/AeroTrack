@@ -1,0 +1,308 @@
+/* SearchBar.module.css — Öğrenci 1 */
+.section {
+  padding: 0 0 48px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr 1fr auto;
+  gap: 16px;
+  align-items: start;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.labelIcon {
+  font-size: 1em;
+}
+
+.input {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  width: 100%;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+
+.input::placeholder { color: var(--color-text-muted); opacity: 0.6; }
+
+.input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+
+/* Date input rengi düzeltme */
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}
+
+.inputError {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(255,71,87,0.1) !important;
+}
+
+.errorMsg {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.errorMsg::before { content: '⚠'; }
+
+/* Swap butonu */
+.swapBtn {
+  align-self: flex-end;
+  padding: 12px;
+  margin-bottom: 0;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  height: 46px;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swapBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: rotate(180deg);
+}
+
+/* Arama butonu */
+.searchBtn {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  height: 46px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.searchBtn:hover {
+  background: #33ddff;
+  box-shadow: 0 0 20px rgba(0,212,255,0.4);
+  transform: translateY(-1px);
+}
+
+.searchBtn:active {
+  transform: translateY(0);
+}
+
+.btnIcon {
+  transition: transform var(--transition);
+}
+
+.searchBtn:hover .btnIcon {
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  .swapBtn { display: none; }
+  .searchBtn { grid-column: 1 / -1; justify-content: center; }
+}
+
+@media (max-width: 500px) {
+  .fields { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+}
+
+/* ── Arama Geçmişi Paneli (Öğrenci 1) ── */
+.history {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.historyTitle {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.historyClearAll {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+
+.historyClearAll:hover {
+  color: var(--color-danger);
+  background: rgba(255, 71, 87, 0.08);
+}
+
+/* Geçmiş öğe listesi */
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Tek öğe satırı */
+.historyItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.historyItem:hover {
+  background: var(--color-surface-2);
+}
+
+/* Tıklanabilir rota butonu */
+.historyBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  min-width: 0; /* flex taşmasını önler */
+}
+
+.historyIcon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.historyRoute {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--color-text);
+  flex: 1;
+  min-width: 0;
+}
+
+.historyRoute strong {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.historyArrow {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.historyDate {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-xl);
+}
+
+/* Tekli sil butonu */
+.historyRemove {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  opacity: 0;         /* normalde gizli */
+  transition: opacity var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+
+/* Satır hover'ında sil butonu belir */
+.historyItem:hover .historyRemove {
+  opacity: 1;
+}
+
+.historyRemove:hover {
+  color: var(--color-danger);
+}
+

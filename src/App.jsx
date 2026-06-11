@@ -3,17 +3,28 @@
 // Brings all components together
 // ============================================
 import { useAppContext } from './context/AppContext'
+import { useLanguage } from './context/LanguageContext'
 import Navbar      from './components/Navbar/Navbar'
 import Hero        from './components/Hero/Hero'
 import SearchBar   from './components/SearchBar/SearchBar'
+import FilterBar   from './components/FilterBar/FilterBar'
 import FlightCard  from './components/FlightCard/FlightCard'
 import TrackedList from './components/TrackedList/TrackedList'
 import { SkeletonList }   from './components/FlightCard/SkeletonCard'
 import { ToastContainer } from './components/Toast/Toast'
+import { useFlightFilter } from './hooks/useFlightFilter'
 
 export default function App() {
   // Get global state from context
   const { flights, isLoading, error, hasSearched, toasts, removeToast } = useAppContext()
+  const { t } = useLanguage()
+  const { filteredFlights, setSortBy, setMaxStops, setPriceRange } = useFlightFilter(flights)
+
+  const handleFilterChange = ({ sort, stops, maxPrice }) => {
+    setSortBy(sort)
+    setMaxStops(stops === 'all' ? null : Number(stops))
+    setPriceRange(null, maxPrice)
+  }
 
   return (
     <div>
@@ -28,6 +39,11 @@ export default function App() {
 
         {/* Search form with validation and API integration */}
         <SearchBar />
+
+        {/* Filter Bar — only show when search has results */}
+        {!isLoading && !error && hasSearched && flights.length > 0 && (
+          <FilterBar onFilterChange={handleFilterChange} />
+        )}
 
         {/* Tracked flights list — re-renders on state change */}
         <TrackedList />
@@ -56,7 +72,7 @@ export default function App() {
             )}
 
             {/* Empty Results State */}
-            {!isLoading && !error && hasSearched && flights.length === 0 && (
+            {!isLoading && !error && hasSearched && filteredFlights.length === 0 && (
               <div style={{
                 textAlign: 'center',
                 padding: '60px 0',
@@ -64,13 +80,13 @@ export default function App() {
               }}>
                 <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✈</div>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>
-                  Bu kriterlere uygun uçuş bulunamadı.
+                  {t('noFlights')}
                 </p>
               </div>
             )}
 
             {/* Flight Cards List — rendered with .map() */}
-            {!isLoading && flights.length > 0 && (
+            {!isLoading && filteredFlights.length > 0 && (
               <>
                 <div style={{
                   display: 'flex',
@@ -83,20 +99,20 @@ export default function App() {
                     fontSize: '1.2rem',
                     fontWeight: '700',
                   }}>
-                    Arama Sonuçları
+                    {t('searchResults')}
                   </h2>
                   <span style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.75rem',
                     color: 'var(--color-text-muted)',
                   }}>
-                    {flights.length} uçuş bulundu
+                    {filteredFlights.length} {t('flightsFound')}
                   </span>
                 </div>
 
                 {/* FlightCard — data passed via props */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {flights.map((flight, index) => (
+                  {filteredFlights.map((flight, index) => (
                     <div
                       key={flight.id}
                       style={{ animationDelay: `${index * 0.08}s` }}
@@ -124,7 +140,7 @@ export default function App() {
         color: 'var(--color-text-muted)',
       }}>
         <div className="container">
-          AeroTrack — Kocaeli Üniversitesi Web Teknolojileri Dersi Projesi
+          {t('footer')}
         </div>
       </footer>
     </div>

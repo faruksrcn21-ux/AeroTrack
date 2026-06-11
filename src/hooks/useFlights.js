@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 import { useAppContext } from '../context/AppContext'
+import { useLanguage } from '../context/LanguageContext'
+import { useCurrency } from '../context/CurrencyContext'
 import { MOCK_FLIGHTS, searchFlights } from '../services/flightApi'
 
 // Set to true to use mock data instead of the real API.
@@ -7,6 +9,8 @@ const USE_MOCK = true
 
 export function useFlights() {
 	const { setFlights, setIsLoading, setError, setHasSearched } = useAppContext()
+	const { lang } = useLanguage()
+	const { currency } = useCurrency()
 
 	const fetchFlights = useCallback(
 		async searchParams => {
@@ -22,7 +26,12 @@ export function useFlights() {
 					await new Promise(resolve => setTimeout(resolve, 1200))
 					results = MOCK_FLIGHTS
 				} else {
-					results = await searchFlights(searchParams)
+					// Inject locale and currency from context into search params
+					results = await searchFlights({
+						...searchParams,
+						locale: lang,
+						currency,
+					})
 				}
 
 				setFlights(results)
@@ -44,7 +53,7 @@ export function useFlights() {
 				setIsLoading(false)
 			}
 		},
-		[setFlights, setIsLoading, setError, setHasSearched],
+		[setFlights, setIsLoading, setError, setHasSearched, lang, currency],
 	)
 
 	return { fetchFlights }

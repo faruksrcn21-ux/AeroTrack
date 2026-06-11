@@ -1,0 +1,24 @@
+[
+  {
+    "id": "2534fc36-7b40-4563-bee4-7e7a872c706a",
+    "flight": {
+      "id": "mock-1",
+      "airline": "THY",
+      "price": 1850
+    },
+    "passenger": {
+      "firstName": "Ahmet",
+      "lastName": "Yılmaz",
+      "tcNumber": "12345678901"
+    },
+    "payment": null,
+    "seat": null,
+    "purchasedAt": "2026-06-11T18:47:14.507Z",
+    "status": "confirmed",
+    "boardingPass": {
+      "gate": "30A",
+      "boardingGroup": "B",
+      "sequence": 26
+    }
+  }
+]

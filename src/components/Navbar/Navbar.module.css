@@ -78,3 +78,40 @@
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
 }
+.selector {
+  display: flex;
+  gap: 0.2rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+
+.selectorBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.selectorActive {
+  background: #6c63ff;
+  color: #fff;
+}
+
+.darkBtn {
+  background: rgba(255,255,255,0.06);
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.darkBtn:hover {
+  background: rgba(255,255,255,0.12);
+}

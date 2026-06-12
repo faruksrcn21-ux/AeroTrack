@@ -2,7 +2,7 @@
 // LanguageContext.jsx — Internationalization (i18n) Context
 // TR/EN dictionary structure and language state management
 // ============================================
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const LanguageContext = createContext(null)
 
@@ -289,6 +289,12 @@ export function LanguageProvider({ children }) {
       return 'tr'
     }
   })
+
+  useEffect(() => {
+    document.title = lang === 'tr'
+      ? 'AeroTrack — Uçuş Arama ve Takip'
+      : 'AeroTrack — Flight Search & Tracking'
+  }, [lang])
 
   const toggleLanguage = useCallback(() => {
     setLang(prev => {

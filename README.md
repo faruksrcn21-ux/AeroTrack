@@ -12,7 +12,7 @@ AeroTrack; gerçek zamanlı uçuş verilerini kullanarak uçuş arama, gelişmi�
 
 | Türkçe — Koyu Tema | English — Dark Mode | English — Light Mode |
 |:---:|:---:|:---:|
-| ![TR Dark](screenshot_tr_dark.jpg) | ![EN Dark](screenshot_en_dark.jpg) | ![EN Light](screenshot_en_light.jpg) |
+| ![TR Dark](screenshot_tr_dark.png) | ![EN Dark](screenshot_en_dark.png) | ![EN Light](screenshot_en_light.png) |
 
 ---
 

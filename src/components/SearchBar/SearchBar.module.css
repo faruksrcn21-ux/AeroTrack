@@ -593,4 +593,18 @@
     text-align: left;
   }
 }
+@media (max-width: 768px) {
+  .fields {
+    flex-direction: column;
+  }
 
+  .swapBtn {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+
+  .card {
+    border-radius: 12px;
+    padding: 16px;
+  }
+}

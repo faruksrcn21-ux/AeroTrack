@@ -1,11 +1,5 @@
-// ============================================
-// Navbar.jsx — Üst Navigasyon Bileşeni
-// Öğrenci 1 sorumluluğu
-// ============================================
+import { useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
-import { useLanguage } from '../../context/LanguageContext'
-import { useCurrency } from '../../context/CurrencyContext'
-import { useTheme } from '../../context/ThemeContext'
 import styles from './Navbar.module.css'
 
 const LANGUAGES = ['TR', 'EN']
@@ -13,9 +7,15 @@ const CURRENCIES = ['TRY', 'USD', 'EUR']
 
 export default function Navbar() {
   const { trackedFlights } = useAppContext()
-  const { lang, toggleLanguage, t } = useLanguage()
-  const { currency, setCurrency } = useCurrency()
-  const { isDark, toggleTheme } = useTheme()
+  const [lang,     setLang]     = useState('TR')
+  const [currency, setCurrency] = useState('TRY')
+  const [darkMode, setDarkMode] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  function toggleDark() {
+    setDarkMode(prev => !prev)
+    document.documentElement.classList.toggle('dark')
+  }
 
   return (
     <nav className={styles.navbar}>
@@ -29,51 +29,67 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* Sağ taraf */}
+        {/* Desktop right */}
         <div className={styles.right}>
-
-          {/* Dil seçici */}
           <div className={styles.selector}>
             {LANGUAGES.map(l => (
-              <button
-                key={l}
-                className={`${styles.selectorBtn} ${lang.toUpperCase() === l ? styles.selectorActive : ''}`}
-                onClick={() => { if (l.toLowerCase() !== lang) toggleLanguage() }}
-              >
-                {l}
-              </button>
+              <button key={l} className={`${styles.selectorBtn} ${lang === l ? styles.selectorActive : ''}`} onClick={() => setLang(l)}>{l}</button>
             ))}
           </div>
-
-          {/* Para birimi seçici */}
           <div className={styles.selector}>
             {CURRENCIES.map(c => (
-              <button
-                key={c}
-                className={`${styles.selectorBtn} ${currency === c ? styles.selectorActive : ''}`}
-                onClick={() => setCurrency(c)}
-              >
-                {c}
-              </button>
+              <button key={c} className={`${styles.selectorBtn} ${currency === c ? styles.selectorActive : ''}`} onClick={() => setCurrency(c)}>{c}</button>
             ))}
           </div>
-
-          {/* Karanlık mod */}
-          <button className={styles.darkBtn} onClick={toggleTheme} aria-label="Tema değiştir">
-            {isDark ? '☀️' : '🌙'}
-          </button>
-
+          <button className={styles.darkBtn} onClick={toggleDark}>{darkMode ? '☀️' : '🌙'}</button>
           <span className={styles.tag}>KOU Web Technologies</span>
-
           {trackedFlights.length > 0 && (
             <div className={styles.badge}>
               <span className={styles.badgeDot} />
-              {trackedFlights.length} {t('tracking').toLowerCase()}
+              {trackedFlights.length} takipte
             </div>
           )}
         </div>
 
+        {/* Mobile right */}
+        <div className={styles.mobileRight}>
+          {trackedFlights.length > 0 && (
+            <div className={styles.badge}>
+              <span className={styles.badgeDot} />
+              {trackedFlights.length}
+            </div>
+          )}
+          <button className={styles.hamburger} onClick={() => setMenuOpen(p => !p)}>
+            {menuOpen ? '✕' : '☰'}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          <div className={styles.mobileRow}>
+            <span className={styles.mobileLabel}>Dil</span>
+            <div className={styles.selector}>
+              {LANGUAGES.map(l => (
+                <button key={l} className={`${styles.selectorBtn} ${lang === l ? styles.selectorActive : ''}`} onClick={() => setLang(l)}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.mobileRow}>
+            <span className={styles.mobileLabel}>Para</span>
+            <div className={styles.selector}>
+              {CURRENCIES.map(c => (
+                <button key={c} className={`${styles.selectorBtn} ${currency === c ? styles.selectorActive : ''}`} onClick={() => setCurrency(c)}>{c}</button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.mobileRow}>
+            <span className={styles.mobileLabel}>Tema</span>
+            <button className={styles.darkBtn} onClick={toggleDark}>{darkMode ? '☀️ Açık' : '🌙 Koyu'}</button>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

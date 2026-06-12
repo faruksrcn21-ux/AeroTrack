@@ -24,7 +24,35 @@ export function useFlights() {
 				if (USE_MOCK) {
 					// Realistic delay simulation
 					await new Promise(resolve => setTimeout(resolve, 1200))
-					results = MOCK_FLIGHTS
+
+					// Helper to parse "City Name (IATA)"
+					const parseAirport = (text) => {
+						if (!text) return { code: '???', city: '' }
+						const match = text.match(/^(.*?)\s*\((.*?)\)$/)
+						if (match) {
+							return { city: match[1].trim(), code: match[2].trim() }
+						}
+						return { city: text, code: text.slice(0, 3).toUpperCase() }
+					}
+
+					const orig = parseAirport(searchParams.origin)
+					const dest = parseAirport(searchParams.destination)
+					const searchDate = searchParams.date || new Date().toISOString().split('T')[0]
+
+					// Map the mock flights dynamically to match search inputs
+					results = MOCK_FLIGHTS.map(f => {
+						const depTime = f.departureTime.split('T')[1] || '08:00:00'
+						const arrTime = f.arrivalTime.split('T')[1] || '09:30:00'
+						return {
+							...f,
+							origin: orig.code,
+							originCity: orig.city,
+							destination: dest.code,
+							destinationCity: dest.city,
+							departureTime: `${searchDate}T${depTime}`,
+							arrivalTime: `${searchDate}T${arrTime}`,
+						}
+					})
 				} else {
 					// Inject locale and currency from context into search params
 					results = await searchFlights({

@@ -2,26 +2,44 @@
 // FilterBar.jsx — Filtreleme ve Sıralama
 // Öğrenci 1 sorumluluğu
 // ============================================
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
+import { useCurrency } from '../../context/CurrencyContext'
+import { formatPrice } from '../../utils/validators'
 import styles from './FilterBar.module.css'
 
-const SORT_OPTIONS = [
-  { value: 'cheapest',  label: '💰 En Ucuz' },
-  { value: 'fastest',   label: '⚡ En Hızlı' },
-  { value: 'best',      label: '⭐ En İyi' },
-]
-
-const STOP_OPTIONS = [
-  { value: 'all',    label: 'Tümü' },
-  { value: '0',      label: 'Direkt' },
-  { value: '1',      label: '1 Aktarma' },
-  { value: '2',      label: '2+ Aktarma' },
-]
-
 export default function FilterBar({ onFilterChange }) {
+  const { t, lang } = useLanguage()
+  const { currency } = useCurrency()
+
+  const isTry = currency === 'TRY'
+  const isUsd = currency === 'USD'
+  const minVal = isTry ? 500 : isUsd ? 15 : 12
+  const maxVal = isTry ? 10000 : isUsd ? 350 : 320
+  const stepVal = isTry ? 100 : isUsd ? 5 : 5
+
   const [sort,     setSort]     = useState('cheapest')
   const [stops,    setStops]    = useState('all')
-  const [maxPrice, setMaxPrice] = useState(10000)
+  const [maxPrice, setMaxPrice] = useState(maxVal)
+
+  // Sync maxPrice when currency changes
+  useEffect(() => {
+    setMaxPrice(maxVal)
+    onFilterChange?.({ sort, stops, maxPrice: maxVal })
+  }, [currency])
+
+  const SORT_OPTIONS = [
+    { value: 'cheapest',  label: `💰 ${t('sortCheapest')}` },
+    { value: 'fastest',   label: `⚡ ${t('sortFastest')}` },
+    { value: 'best',      label: `⭐ ${t('sortBest')}` },
+  ]
+
+  const STOP_OPTIONS = [
+    { value: 'all',    label: t('filterAll') },
+    { value: '0',      label: t('filterDirect') },
+    { value: '1',      label: t('filterOneStop') },
+    { value: '2',      label: t('filterTwoPlus') },
+  ]
 
   function handleSort(value) {
     setSort(value)
@@ -46,7 +64,7 @@ export default function FilterBar({ onFilterChange }) {
 
           {/* Sıralama */}
           <div className={styles.group}>
-            <span className={styles.groupLabel}>Sırala</span>
+            <span className={styles.groupLabel}>{lang === 'tr' ? 'Sırala' : 'Sort By'}</span>
             <div className={styles.pills}>
               {SORT_OPTIONS.map(opt => (
                 <button
@@ -62,7 +80,7 @@ export default function FilterBar({ onFilterChange }) {
 
           {/* Aktarma */}
           <div className={styles.group}>
-            <span className={styles.groupLabel}>Aktarma</span>
+            <span className={styles.groupLabel}>{t('filterStops')}</span>
             <div className={styles.pills}>
               {STOP_OPTIONS.map(opt => (
                 <button
@@ -78,12 +96,12 @@ export default function FilterBar({ onFilterChange }) {
 
           {/* Fiyat */}
           <div className={styles.group}>
-            <span className={styles.groupLabel}>Max Fiyat: ₺{maxPrice.toLocaleString()}</span>
+            <span className={styles.groupLabel}>{t('filterPrice')}: {formatPrice(maxPrice, currency, lang)}</span>
             <input
               type="range"
-              min={500}
-              max={10000}
-              step={100}
+              min={minVal}
+              max={maxVal}
+              step={stepVal}
               value={maxPrice}
               onChange={handlePrice}
               className={styles.slider}

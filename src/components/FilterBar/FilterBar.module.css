@@ -1,6 +1,6 @@
 .filterBar {
-  background: var(--color-surface, #1a1a2e);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   padding: 0.75rem 0;
   position: sticky;
   top: 0;
@@ -22,7 +22,7 @@
 
 .groupLabel {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.5);
+  color: var(--color-text-muted);
   white-space: nowrap;
   min-width: 80px;
 }
@@ -33,9 +33,9 @@
 }
 
 .pill {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.7);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   border-radius: 20px;
   padding: 0.3rem 0.85rem;
   font-size: 0.8rem;
@@ -44,18 +44,19 @@
 }
 
 .pill:hover {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
+  background: var(--color-border);
+  color: var(--color-text);
 }
 
 .pillActive {
-  background: #6c63ff;
-  border-color: #6c63ff;
-  color: #fff;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+  font-weight: 600;
 }
 
 .slider {
   width: 140px;
-  accent-color: #6c63ff;
+  accent-color: var(--color-accent);
   cursor: pointer;
 }

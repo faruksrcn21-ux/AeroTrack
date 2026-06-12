@@ -31,6 +31,31 @@
   --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── Light Theme ── */
+[data-theme="light"] {
+  --color-bg:          #f0f4f8;
+  --color-surface:     #ffffff;
+  --color-surface-2:   #e8edf5;
+  --color-border:      #d0d8e8;
+  --color-accent:      #0094cc;
+  --color-accent-2:    #e85d20;
+  --color-accent-glow: rgba(0, 148, 204, 0.12);
+  --color-text:        #1a2332;
+  --color-text-muted:  #6b7fa3;
+  --color-success:     #00b880;
+  --color-danger:      #e03e4e;
+
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.08), 0 0 0 1px var(--color-border);
+  --shadow-glow: 0 0 20px var(--color-accent-glow);
+}
+
+/* Light temada grid arka planını gizle */
+[data-theme="light"] body::before {
+  background-image:
+    linear-gradient(rgba(0,148,204,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,148,204,0.04) 1px, transparent 1px);
+}
+
 /* --- Reset --- */
 *, *::before, *::after {
   box-sizing: border-box;

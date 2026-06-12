@@ -2,8 +2,10 @@
 // Navbar.jsx — Üst Navigasyon Bileşeni
 // Öğrenci 1 sorumluluğu
 // ============================================
-import { useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
+import { useLanguage } from '../../context/LanguageContext'
+import { useCurrency } from '../../context/CurrencyContext'
+import { useTheme } from '../../context/ThemeContext'
 import styles from './Navbar.module.css'
 
 const LANGUAGES = ['TR', 'EN']
@@ -11,14 +13,9 @@ const CURRENCIES = ['TRY', 'USD', 'EUR']
 
 export default function Navbar() {
   const { trackedFlights } = useAppContext()
-  const [lang,     setLang]     = useState('TR')
-  const [currency, setCurrency] = useState('TRY')
-  const [darkMode, setDarkMode] = useState(false)
-
-  function toggleDark() {
-    setDarkMode(prev => !prev)
-    document.documentElement.classList.toggle('dark')
-  }
+  const { lang, toggleLanguage, t } = useLanguage()
+  const { currency, setCurrency } = useCurrency()
+  const { isDark, toggleTheme } = useTheme()
 
   return (
     <nav className={styles.navbar}>
@@ -40,8 +37,8 @@ export default function Navbar() {
             {LANGUAGES.map(l => (
               <button
                 key={l}
-                className={`${styles.selectorBtn} ${lang === l ? styles.selectorActive : ''}`}
-                onClick={() => setLang(l)}
+                className={`${styles.selectorBtn} ${lang.toUpperCase() === l ? styles.selectorActive : ''}`}
+                onClick={() => { if (l.toLowerCase() !== lang) toggleLanguage() }}
               >
                 {l}
               </button>
@@ -62,8 +59,8 @@ export default function Navbar() {
           </div>
 
           {/* Karanlık mod */}
-          <button className={styles.darkBtn} onClick={toggleDark} aria-label="Tema değiştir">
-            {darkMode ? '☀️' : '🌙'}
+          <button className={styles.darkBtn} onClick={toggleTheme} aria-label="Tema değiştir">
+            {isDark ? '☀️' : '🌙'}
           </button>
 
           <span className={styles.tag}>KOU Web Technologies</span>
@@ -71,7 +68,7 @@ export default function Navbar() {
           {trackedFlights.length > 0 && (
             <div className={styles.badge}>
               <span className={styles.badgeDot} />
-              {trackedFlights.length} takipte
+              {trackedFlights.length} {t('tracking').toLowerCase()}
             </div>
           )}
         </div>

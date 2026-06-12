@@ -23,7 +23,9 @@ export default function Navbar() {
 
         {/* Logo */}
         <div className={styles.logo}>
-          <span className={styles.logoIcon}>✈</span>
+          <svg className={styles.logoIcon} viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M12,2 L13,9 L22,13 L22,15 L13,13 L13,19 L16,21 L16,22 L12,21 L8,22 L8,21 L11,19 L11,13 L2,15 L2,13 L11,9 Z" />
+          </svg>
           <span className={styles.logoText}>
             Aero<span className={styles.logoAccent}>Track</span>
           </span>

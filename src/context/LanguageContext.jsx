@@ -5,6 +5,7 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const LanguageContext = createContext(null)
+const SUPPORTED_LANGUAGES = ['tr', 'en']
 
 // ── Translation Dictionaries ──
 const translations = {
@@ -284,7 +285,8 @@ const translations = {
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
     try {
-      return localStorage.getItem('aerotrack_lang') || 'tr'
+      const saved = localStorage.getItem('aerotrack_lang')
+      return SUPPORTED_LANGUAGES.includes(saved) ? saved : 'tr'
     } catch {
       return 'tr'
     }
@@ -295,6 +297,12 @@ export function LanguageProvider({ children }) {
       ? 'AeroTrack — Uçuş Arama ve Takip'
       : 'AeroTrack — Flight Search & Tracking'
   }, [lang])
+
+  const setLanguage = useCallback((nextLang) => {
+    if (!SUPPORTED_LANGUAGES.includes(nextLang)) return
+    setLang(nextLang)
+    localStorage.setItem('aerotrack_lang', nextLang)
+  }, [])
 
   const toggleLanguage = useCallback(() => {
     setLang(prev => {
@@ -310,7 +318,7 @@ export function LanguageProvider({ children }) {
   }, [lang])
 
   return (
-    <LanguageContext.Provider value={{ lang, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ lang, setLanguage, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   )

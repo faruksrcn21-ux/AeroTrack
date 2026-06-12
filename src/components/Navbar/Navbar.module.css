@@ -156,3 +156,52 @@
     padding: 3px 8px;
   }
 }
+.mobileRight {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.hamburger {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: rgba(5,8,15,0.95);
+}
+
+.mobileRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobileLabel {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 768px) {
+  .right {
+    display: none;
+  }
+
+  .mobileRight {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
+}

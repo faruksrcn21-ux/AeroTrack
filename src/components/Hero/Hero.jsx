@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
 import styles from './Hero.module.css'
 
 export default function Hero() {
   const petalsRef = useRef(null)
   const starsRef  = useRef(null)
+  const { t, lang } = useLanguage()
+  const [showHowItWorks, setShowHowItWorks] = useState(false)
 
   useEffect(() => {
     const petalColors = ['#ff9eca','#ffb8d4','#ffd4e8','#ff80b8','#ffcce0','#ff6eb0']
@@ -41,6 +44,33 @@ export default function Hero() {
     }
   }, [])
 
+  // "Uçuş Ara" butonu — SearchBar'a smooth scroll
+  const handleSearchClick = () => {
+    const searchSection = document.querySelector('[data-section="search"]') 
+      || document.querySelector('.search-bar-section')
+      || document.querySelector('form')
+    if (searchSection) {
+      searchSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+
+  // "Nasıl çalışır?" butonu — bilgi panelini aç/kapat
+  const handleHowItWorks = () => {
+    setShowHowItWorks(prev => !prev)
+  }
+
+  const howItWorksSteps = lang === 'tr' ? [
+    { icon: '🔍', title: 'Uçuş Ara', desc: 'Kalkış ve varış noktanızı, tarihinizi seçin.' },
+    { icon: '📊', title: 'Karşılaştır', desc: 'Yüzlerce uçuş arasından en uygununu filtreleyin.' },
+    { icon: '📌', title: 'Takip Et', desc: 'Beğendiğiniz uçuşları takibe alın, fiyat düşünce bildirim alın.' },
+    { icon: '🎫', title: 'Satın Al', desc: 'Koltuğunuzu seçin ve biletinizi satın alın.' },
+  ] : [
+    { icon: '🔍', title: 'Search', desc: 'Enter your origin, destination and travel date.' },
+    { icon: '📊', title: 'Compare', desc: 'Filter and sort hundreds of flights to find the best deal.' },
+    { icon: '📌', title: 'Track', desc: 'Track your favorite flights and get notified on price drops.' },
+    { icon: '🎫', title: 'Book', desc: 'Select your seat and purchase your ticket.' },
+  ]
+
   return (
     <section className={styles.hero}>
       <div className={styles.glow} />
@@ -58,23 +88,41 @@ export default function Hero() {
       <div className={styles.content}>
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          <span className={styles.badgeText}>Gerçek Zamanlı Uçuş Takibi</span>
+          <span className={styles.badgeText}>{t('heroEyebrow')}</span>
         </div>
 
         <h1 className={styles.title}>
-          Dünyanın Her<br />
-          <span className={styles.titleAccent}>Noktasına</span> Uç
+          {t('heroTitle1')}<br />
+          <span className={styles.titleAccent}>{t('heroTitle2')}</span> {t('heroTitle3')}
         </h1>
 
         <p className={styles.subtitle}>
-          Yüzlerce havayolu arasından en uygun biletleri bulun,
-          anlık fiyat değişikliklerini takip edin.
+          {t('heroSubtitle')}
         </p>
 
         <div className={styles.actions}>
-          <button className={styles.btnPrimary}>✈ Uçuş Ara</button>
-          <button className={styles.btnSecondary}>Nasıl çalışır?</button>
+          <button className={styles.btnPrimary} onClick={handleSearchClick}>
+            ✈ {t('searchBtn')}
+          </button>
+          <button className={styles.btnSecondary} onClick={handleHowItWorks}>
+            {lang === 'tr' ? 'Nasıl çalışır?' : 'How it works?'}
+          </button>
         </div>
+
+        {/* How It Works — Açılır bilgi paneli */}
+        {showHowItWorks && (
+          <div className={styles.howItWorks}>
+            {howItWorksSteps.map((step, i) => (
+              <div key={i} className={styles.howStep}>
+                <span className={styles.howIcon}>{step.icon}</span>
+                <div>
+                  <strong className={styles.howTitle}>{step.title}</strong>
+                  <p className={styles.howDesc}>{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className={styles.horizon} />

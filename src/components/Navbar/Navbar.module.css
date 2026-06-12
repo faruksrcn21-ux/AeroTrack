@@ -139,11 +139,11 @@
     display: none;
   }
 
-  .selector {
+  .right .selector {
     display: none;
   }
 
-  .darkBtn {
+  .right .darkBtn {
     display: none;
   }
 
@@ -177,8 +177,8 @@
   flex-direction: column;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  background: rgba(5,8,15,0.95);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .mobileRow {
@@ -189,7 +189,7 @@
 
 .mobileLabel {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.5);
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 768px) {
@@ -203,5 +203,15 @@
 
   .mobileMenu {
     display: flex;
+  }
+
+  .mobileMenu .selector {
+    display: flex;
+  }
+
+  .mobileMenu .darkBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }

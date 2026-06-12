@@ -2,7 +2,9 @@
 // TrackedList.jsx — Tracked Flights Panel
 // ============================================
 import { useAppContext } from '../../context/AppContext'
-import { formatPrice, formatDuration } from '../../utils/validators'
+import { useLanguage } from '../../context/LanguageContext'
+import { useCurrency } from '../../context/CurrencyContext'
+import { formatPrice, formatDuration, convertCurrency } from '../../utils/validators'
 import styles from './TrackedList.module.css'
 
 function formatTime(isoString) {
@@ -15,6 +17,8 @@ function formatTime(isoString) {
 export default function TrackedList() {
   // Get tracked flights list and removal function from context
   const { trackedFlights, removeTracked } = useAppContext()
+  const { t, lang } = useLanguage()
+  const { currency } = useCurrency()
 
   // Don't render if no tracked flights
   if (trackedFlights.length === 0) return null
@@ -26,64 +30,70 @@ export default function TrackedList() {
         {/* Başlık */}
         <div className={styles.header}>
           <div className={styles.titleGroup}>
-            <h2 className={styles.title}>Takip Ettiklerim</h2>
+            <h2 className={styles.title}>{t('myTracked')}</h2>
             <span className={styles.count}>{trackedFlights.length}</span>
           </div>
           <p className={styles.subtitle}>
-            Seçtiğiniz uçuşlar — localStorage'a kaydedildi
+            {t('trackedSubtitle')}
           </p>
         </div>
 
         {/* Takip listesi */}
         <div className={styles.list}>
-          {trackedFlights.map((flight, index) => (
-            <div
-              key={flight.id}
-              className={`${styles.item} fade-in`}
-              style={{ animationDelay: `${index * 0.06}s` }}
-            >
-              {/* Sol: havayolu */}
-              <div className={styles.itemAirline}>
-                <div className={styles.airlineAvatar}>
-                  {flight.airline[0]}
-                </div>
-                <div>
-                  <div className={styles.airlineName}>{flight.airline}</div>
-                  <div className={styles.flightNum}>{flight.flightNumber}</div>
-                </div>
-              </div>
+          {trackedFlights.map((flight, index) => {
+            const displayPrice = flight.currency === currency 
+              ? flight.price 
+              : convertCurrency(flight.price, currency)
 
-              {/* Orta: rota */}
-              <div className={styles.itemRoute}>
-                <span className={styles.routeCode}>{flight.origin}</span>
-                <div className={styles.routeArrow}>
-                  <span className={styles.routeTime}>{formatTime(flight.departureTime)}</span>
-                  <span className={styles.routeArrowLine}>→</span>
-                  <span className={styles.routeTime}>{formatTime(flight.arrivalTime)}</span>
-                </div>
-                <span className={styles.routeCode}>{flight.destination}</span>
-              </div>
-
-              {/* Sağ: süre & fiyat & sil butonu */}
-              <div className={styles.itemMeta}>
-                <span className={styles.duration}>
-                  {formatDuration(flight.durationMinutes)}
-                </span>
-                <span className={styles.price}>
-                  {formatPrice(flight.price, flight.currency)}
-                </span>
-              </div>
-
-              {/* Remove button */}
-              <button
-                className={styles.removeBtn}
-                onClick={() => removeTracked(flight.id)}
-                aria-label={`${flight.airline} ${flight.flightNumber} uçuşunu takipten çıkar`}
+            return (
+              <div
+                key={flight.id}
+                className={`${styles.item} fade-in`}
+                style={{ animationDelay: `${index * 0.06}s` }}
               >
-                🗑
-              </button>
-            </div>
-          ))}
+                {/* Sol: havayolu */}
+                <div className={styles.itemAirline}>
+                  <div className={styles.airlineAvatar}>
+                    {flight.airline[0]}
+                  </div>
+                  <div>
+                    <div className={styles.airlineName}>{flight.airline}</div>
+                    <div className={styles.flightNum}>{flight.flightNumber}</div>
+                  </div>
+                </div>
+
+                {/* Orta: rota */}
+                <div className={styles.itemRoute}>
+                  <span className={styles.routeCode}>{flight.origin}</span>
+                  <div className={styles.routeArrow}>
+                    <span className={styles.routeTime}>{formatTime(flight.departureTime)}</span>
+                    <span className={styles.routeArrowLine}>→</span>
+                    <span className={styles.routeTime}>{formatTime(flight.arrivalTime)}</span>
+                  </div>
+                  <span className={styles.routeCode}>{flight.destination}</span>
+                </div>
+
+                {/* Sağ: süre & fiyat & sil butonu */}
+                <div className={styles.itemMeta}>
+                  <span className={styles.duration}>
+                    {formatDuration(flight.durationMinutes, lang)}
+                  </span>
+                  <span className={styles.price}>
+                    {formatPrice(displayPrice, currency, lang)}
+                  </span>
+                </div>
+
+                {/* Remove button */}
+                <button
+                  className={styles.removeBtn}
+                  onClick={() => removeTracked(flight.id)}
+                  aria-label={`${flight.airline} ${flight.flightNumber} uçuşunu takipten çıkar`}
+                >
+                  🗑
+                </button>
+              </div>
+            )
+          })}
         </div>
 
       </div>

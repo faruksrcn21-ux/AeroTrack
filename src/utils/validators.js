@@ -12,16 +12,16 @@ export function validateSearchForm(formData) {
 
   // Origin validation
   if (!formData.origin || formData.origin.trim().length < 2) {
-    errors.origin = 'Kalkış noktası en az 2 karakter olmalıdır.'
-  } else if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(formData.origin.trim())) {
-    errors.origin = 'Lütfen geçerli bir şehir/havalimanı adı girin.'
+    errors.origin = 'originRequired'
+  } else if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s\(\)]+$/.test(formData.origin.trim())) {
+    errors.origin = 'originInvalid'
   }
 
   // Destination validation
   if (!formData.destination || formData.destination.trim().length < 2) {
-    errors.destination = 'Varış noktası en az 2 karakter olmalıdır.'
-  } else if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(formData.destination.trim())) {
-    errors.destination = 'Lütfen geçerli bir şehir/havalimanı adı girin.'
+    errors.destination = 'destRequired'
+  } else if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s\(\)]+$/.test(formData.destination.trim())) {
+    errors.destination = 'destInvalid'
   }
 
   // Same origin-destination check
@@ -30,18 +30,18 @@ export function validateSearchForm(formData) {
     formData.destination &&
     formData.origin.trim().toLowerCase() === formData.destination.trim().toLowerCase()
   ) {
-    errors.destination = 'Kalkış ve varış noktaları aynı olamaz.'
+    errors.destination = 'sameOriginDest'
   }
 
   // Date validation
   if (!formData.date) {
-    errors.date = 'Lütfen bir tarih seçin.'
+    errors.date = 'dateRequired'
   } else {
     const selectedDate = new Date(formData.date)
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     if (selectedDate < today) {
-      errors.date = 'Geçmiş bir tarih seçilemez.'
+      errors.date = 'datePast'
     }
   }
 

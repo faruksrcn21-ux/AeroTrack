@@ -3,6 +3,8 @@
 // Filters and sorts the flight list on the client side
 // ============================================
 import { useState, useMemo, useCallback } from 'react'
+import { useCurrency } from '../context/CurrencyContext'
+import { convertCurrency } from '../utils/validators'
 
 // Default filter values
 const DEFAULT_FILTERS = {
@@ -20,6 +22,7 @@ const DEFAULT_FILTERS = {
  */
 export function useFlightFilter(flights = []) {
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
+  const { currency } = useCurrency()
 
   // ── Meta info: price bounds and airline list ──
   const meta = useMemo(() => {
@@ -27,15 +30,15 @@ export function useFlightFilter(flights = []) {
       return { minPrice: 0, maxPrice: 10000, airlines: [] }
     }
 
-    const prices = flights.map(f => f.price)
+    const convertedPrices = flights.map(f => f.currency === currency ? f.price : convertCurrency(f.price, currency))
     const airlineSet = new Set(flights.map(f => f.airline))
 
     return {
-      minPrice: Math.min(...prices),
-      maxPrice: Math.max(...prices),
+      minPrice: Math.min(...convertedPrices),
+      maxPrice: Math.max(...convertedPrices),
       airlines: [...airlineSet].sort(),
     }
-  }, [flights])
+  }, [flights, currency])
 
   // ── Sorting function ──
   function sortFlights(list, sortBy) {
@@ -43,7 +46,11 @@ export function useFlightFilter(flights = []) {
 
     switch (sortBy) {
       case 'cheapest':
-        return sorted.sort((a, b) => a.price - b.price)
+        return sorted.sort((a, b) => {
+          const priceA = a.currency === currency ? a.price : convertCurrency(a.price, currency)
+          const priceB = b.currency === currency ? b.price : convertCurrency(b.price, currency)
+          return priceA - priceB
+        })
 
       case 'fastest':
         return sorted.sort((a, b) => a.durationMinutes - b.durationMinutes)
@@ -52,8 +59,10 @@ export function useFlightFilter(flights = []) {
       default:
         // Normalize price and duration to calculate the best score
         return sorted.sort((a, b) => {
-          const scoreA = a.price * 0.6 + a.durationMinutes * 10 * 0.4
-          const scoreB = b.price * 0.6 + b.durationMinutes * 10 * 0.4
+          const priceA = a.currency === currency ? a.price : convertCurrency(a.price, currency)
+          const priceB = b.currency === currency ? b.price : convertCurrency(b.price, currency)
+          const scoreA = priceA * 0.6 + a.durationMinutes * 10 * 0.4
+          const scoreB = priceB * 0.6 + b.durationMinutes * 10 * 0.4
           return scoreA - scoreB
         })
     }
@@ -69,11 +78,16 @@ export function useFlightFilter(flights = []) {
     }
 
     // Price range filter
-    if (filters.minPrice !== null) {
-      result = result.filter(f => f.price >= filters.minPrice)
-    }
-    if (filters.maxPrice !== null) {
-      result = result.filter(f => f.price <= filters.maxPrice)
+    if (filters.minPrice !== null || filters.maxPrice !== null) {
+      result = result.filter(f => {
+        const displayPrice = f.currency === currency 
+          ? f.price 
+          : convertCurrency(f.price, currency)
+        
+        if (filters.minPrice !== null && displayPrice < filters.minPrice) return false
+        if (filters.maxPrice !== null && displayPrice > filters.maxPrice) return false
+        return true
+      })
     }
 
     // Airline filter
@@ -83,7 +97,7 @@ export function useFlightFilter(flights = []) {
 
     // Apply sorting
     return sortFlights(result, filters.sortBy)
-  }, [flights, filters])
+  }, [flights, filters, currency])
 
   // ── Setter functions ──
   const setSortBy = useCallback((sortBy) => {

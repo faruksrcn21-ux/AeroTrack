@@ -7,6 +7,35 @@ import styles from './Navbar.module.css'
 
 const LANGUAGES = ['TR', 'EN']
 
+function SunIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.5" fill="currentColor" />
+      <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <line x1="12" y1="2" x2="12" y2="5" />
+        <line x1="12" y1="19" x2="12" y2="22" />
+        <line x1="2" y1="12" x2="5" y2="12" />
+        <line x1="19" y1="12" x2="22" y2="12" />
+        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+        <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+      </g>
+    </svg>
+  )
+}
+
+function MoonIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M21 14.5A7.5 7.5 0 0 1 9.5 3.2 6.5 6.5 0 1 0 21 14.5Z"
+      />
+    </svg>
+  )
+}
+
 export default function Navbar() {
   const { trackedFlights } = useAppContext()
   const { currency, setCurrency, currencies } = useCurrency()
@@ -20,7 +49,8 @@ export default function Navbar() {
 
   const trackedLabel = lang === 'tr' ? 'takipte' : t('tracking').toLowerCase()
   const themeLabel = isDark ? t('lightMode') : t('darkMode')
-  const themeIcon = isDark ? '\u2600' : '\u263e'
+  const ThemeIcon = isDark ? SunIcon : MoonIcon
+  const themeIconClass = isDark ? styles.themeIconSun : styles.themeIconMoon
   const menuIcon = menuOpen ? '\u00d7' : '\u2630'
 
   return (
@@ -64,7 +94,7 @@ export default function Navbar() {
           </div>
 
           <button className={styles.darkBtn} onClick={toggleTheme} type="button" title={themeLabel}>
-            {themeIcon}
+            <ThemeIcon className={`${styles.themeIcon} ${themeIconClass}`} />
           </button>
 
           <span className={styles.tag}>KOU Web Technologies</span>
@@ -134,7 +164,8 @@ export default function Navbar() {
           <div className={styles.mobileRow}>
             <span className={styles.mobileLabel}>Tema</span>
             <button className={styles.darkBtn} onClick={toggleTheme} type="button">
-              {themeIcon} {themeLabel}
+              <ThemeIcon className={`${styles.themeIcon} ${themeIconClass}`} />
+              {themeLabel}
             </button>
           </div>
         </div>

@@ -2,6 +2,7 @@
 // App.jsx — Main Application Component
 // Brings all components together
 // ============================================
+import { useState } from 'react'
 import { useAppContext } from './context/AppContext'
 import { useLanguage } from './context/LanguageContext'
 import Navbar      from './components/Navbar/Navbar'
@@ -10,13 +11,16 @@ import SearchBar   from './components/SearchBar/SearchBar'
 import FilterBar   from './components/FilterBar/FilterBar'
 import FlightCard  from './components/FlightCard/FlightCard'
 import TrackedList from './components/TrackedList/TrackedList'
+import BookingsList from './components/BookingsList/BookingsList'
+import CheckoutModal from './components/CheckoutModal/CheckoutModal'
 import { SkeletonList }   from './components/FlightCard/SkeletonCard'
 import { ToastContainer } from './components/Toast/Toast'
 import { useFlightFilter } from './hooks/useFlightFilter'
 
 export default function App() {
   // Get global state from context
-  const { flights, isLoading, error, hasSearched, toasts, removeToast } = useAppContext()
+  const { flights, isLoading, error, hasSearched, toasts, removeToast, addBooking } = useAppContext()
+  const [activePurchaseFlight, setActivePurchaseFlight] = useState(null)
   const { t } = useLanguage()
   const { filteredFlights, setSortBy, setMaxStops, setPriceRange } = useFlightFilter(flights)
 
@@ -47,6 +51,9 @@ export default function App() {
 
         {/* Tracked flights list — re-renders on state change */}
         <TrackedList />
+
+        {/* Biletlerim (Bookings) listesi */}
+        <BookingsList />
 
         {/* Results Section */}
         <section>
@@ -118,7 +125,7 @@ export default function App() {
                       style={{ animationDelay: `${index * 0.08}s` }}
                     >
                       {/* Flight data via prop */}
-                      <FlightCard flight={flight} />
+                      <FlightCard flight={flight} onBuyClick={setActivePurchaseFlight} />
                     </div>
                   ))}
                 </div>
@@ -143,6 +150,14 @@ export default function App() {
           {t('footer')}
         </div>
       </footer>
+
+      {activePurchaseFlight && (
+        <CheckoutModal
+          flight={activePurchaseFlight}
+          onClose={() => setActivePurchaseFlight(null)}
+          onPurchase={addBooking}
+        />
+      )}
     </div>
   )
 }

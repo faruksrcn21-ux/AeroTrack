@@ -1,0 +1,245 @@
+/* BookingsList.module.css */
+.section {
+  padding: 32px 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.count {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* ── Boarding Pass Card ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pass {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.pass:hover {
+  transform: translateY(-2px);
+}
+
+/* Üst accent çizgisi */
+.pass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+}
+
+.passTop {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.passRoute {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.passCode {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.passArrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-text-muted);
+}
+
+.passArrowLine {
+  font-size: 0.9rem;
+}
+
+.passAirline {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+}
+
+.passRight {
+  text-align: right;
+}
+
+.passPrice {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.passStatus {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Kesik çizgi ayırıcı */
+.passDivider {
+  border: none;
+  border-top: 2px dashed var(--color-border);
+  margin: 0 24px;
+  position: relative;
+}
+
+.passDivider::before,
+.passDivider::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-bg);
+  border-radius: 50%;
+}
+
+.passDivider::before { left: -34px; }
+.passDivider::after  { right: -34px; }
+
+/* Alt bilgi bölümü */
+.passBottom {
+  padding: 16px 24px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.passField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.passFieldLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.passFieldValue {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* QR Code placeholder */
+.passQR {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrCode {
+  width: 64px;
+  height: 64px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 1px;
+}
+
+.qrCell {
+  border-radius: 1px;
+}
+
+/* İptal butonu */
+.passActions {
+  padding: 0 24px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancelBtn {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+  background: rgba(255,71,87,0.08);
+}
+
+/* Boş durum */
+.empty {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--color-text-muted);
+}
+
+.emptyIcon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.emptyText {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 600px) {
+  .passBottom { grid-template-columns: repeat(3, 1fr); }
+  .passTop { flex-direction: column; align-items: flex-start; }
+}

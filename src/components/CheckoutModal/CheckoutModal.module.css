@@ -1,0 +1,447 @@
+/* CheckoutModal.module.css */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.closeBtn:hover {
+  background: rgba(255,71,87,0.15);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+/* ── Flight Summary Header ── */
+.flightSummary {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(255,107,53,0.03));
+}
+
+.flightRoute {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.routeCode {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.routeArrow {
+  color: var(--color-accent);
+  font-size: 1.2rem;
+}
+
+.flightMeta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Steps indicator ── */
+.steps {
+  display: flex;
+  padding: 16px 28px;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.step {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-surface-2);
+  transition: background 0.3s;
+}
+
+.stepActive {
+  background: var(--color-accent);
+}
+
+.stepDone {
+  background: var(--color-success);
+}
+
+/* ── Content Area ── */
+.content {
+  padding: 24px 28px;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  font-size: 1.2rem;
+}
+
+/* ── Seat Map ── */
+.seatMap {
+  margin-bottom: 20px;
+}
+
+.seatLegend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.plane {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 40px 40px var(--radius-lg) var(--radius-lg);
+  padding: 32px 16px 16px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.seatRowLabels {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.seatColLabel {
+  width: 36px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.seatColLabelAisle {
+  width: 16px;
+}
+
+.seatRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.seatRowNum {
+  width: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  font-weight: 700;
+}
+
+.seat {
+  width: 36px;
+  height: 32px;
+  border-radius: 6px 6px 4px 4px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat:hover:not(.seatTaken) {
+  border-color: var(--color-accent);
+  background: rgba(0,212,255,0.1);
+  color: var(--color-accent);
+  transform: scale(1.08);
+}
+
+.seatSelected {
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 0 12px rgba(0,212,255,0.4);
+}
+
+.seatTaken {
+  background: var(--color-surface-2);
+  border-color: transparent;
+  color: rgba(255,255,255,0.15);
+  cursor: not-allowed;
+}
+
+.seatAisle {
+  width: 16px;
+  height: 32px;
+}
+
+/* ── Form ── */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroupFull {
+  grid-column: 1 / -1;
+}
+
+.formLabel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.formInput {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formInput:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+
+.formInput::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+.formError {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-danger);
+}
+
+/* ── Footer / Actions ── */
+.footer {
+  padding: 20px 28px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.15);
+}
+
+.totalPrice {
+  display: flex;
+  flex-direction: column;
+}
+
+.totalLabel {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.totalAmount {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.footerBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.backBtn {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
+.nextBtn {
+  background: var(--color-accent);
+  border: none;
+  color: var(--color-bg);
+  padding: 10px 28px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nextBtn:hover {
+  box-shadow: 0 0 20px rgba(0,212,255,0.4);
+  transform: translateY(-1px);
+}
+
+.nextBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.purchaseBtn {
+  background: linear-gradient(135deg, #00e5a0, #00c490);
+  color: #000;
+}
+
+.purchaseBtn:hover {
+  box-shadow: 0 0 20px rgba(0,229,160,0.4);
+}
+
+/* ── Success screen ── */
+.success {
+  text-align: center;
+  padding: 48px 28px;
+}
+
+.successIcon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.successTitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-success);
+  margin-bottom: 8px;
+}
+
+.successMsg {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.successBtn {
+  background: var(--color-accent);
+  border: none;
+  color: var(--color-bg);
+  padding: 12px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.successBtn:hover {
+  box-shadow: 0 0 20px rgba(0,212,255,0.4);
+}
+
+@media (max-width: 600px) {
+  .modal { max-width: 100%; }
+  .formGrid { grid-template-columns: 1fr; }
+  .flightRoute { flex-wrap: wrap; }
+  .footer { flex-direction: column; gap: 16px; }
+}

@@ -38,7 +38,7 @@ AeroTrack; gerçek zamanlı uçuş verilerini kullanarak uçuş arama, gelişmi�
 - Mock ödeme ve `/api/bookings` entegrasyonu
 
 ### Biletlerim & Boarding Pass
-- QR kodlu dijital biniş kartı görünümü
+- Dijital biniş kartı görünümü
 - Bilet listeleme ve iptal
 
 ### Çoklu Dil, Kur ve Tema

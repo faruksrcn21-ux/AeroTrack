@@ -9,15 +9,42 @@ import { useCurrency } from '../../context/CurrencyContext'
 import { formatPrice, convertCurrency } from '../../utils/validators'
 import styles from './BookingsList.module.css'
 
-// Basit QR kod üreteci (görsel simülasyon)
+// Gelişmiş QR kod simülasyonu (21x21 hücreli ve köşelerde gerçekçi algılama desenleri ile)
 function MockQR({ seed }) {
   const cells = []
   let hash = 0
   for (let i = 0; i < (seed || 'x').length; i++) {
     hash = ((hash << 5) - hash + (seed || 'x').charCodeAt(i)) | 0
   }
-  for (let i = 0; i < 64; i++) {
-    const isDark = ((hash * (i + 1) * 7919) % 100) > 45
+  
+  const gridSize = 21 // 21x21 Version 1 QR
+  const totalCells = gridSize * gridSize
+
+  for (let i = 0; i < totalCells; i++) {
+    const row = Math.floor(i / gridSize)
+    const col = i % gridSize
+    
+    let isDark = false
+    
+    // Sol Üst Köşe (Top-Left Finder)
+    if (row < 7 && col < 7) {
+      isDark = (row === 0 || row === 6 || col === 0 || col === 6 || (row >= 2 && row <= 4 && col >= 2 && col <= 4))
+    }
+    // Sağ Üst Köşe (Top-Right Finder)
+    else if (row < 7 && col >= 14) {
+      const c = col - 14
+      isDark = (row === 0 || row === 6 || c === 0 || c === 6 || (row >= 2 && row <= 4 && c >= 2 && c <= 4))
+    }
+    // Sol Alt Köşe (Bottom-Left Finder)
+    else if (row >= 14 && col < 7) {
+      const r = row - 14
+      isDark = (r === 0 || r === 6 || col === 0 || col === 6 || (r >= 2 && r <= 4 && col >= 2 && col <= 4))
+    }
+    // Diğer alanlar: Pseudo-random veri hücreleri
+    else {
+      isDark = Math.abs((hash * (i + 13) * 7919) % 100) > 48
+    }
+
     cells.push(
       <div
         key={i}
@@ -26,6 +53,7 @@ function MockQR({ seed }) {
       />
     )
   }
+
   return <div className={styles.qrCode}>{cells}</div>
 }
 

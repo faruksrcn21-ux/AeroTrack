@@ -105,7 +105,7 @@ export default function Hero() {
             ✈ {t('searchBtn')}
           </button>
           <button className={styles.btnSecondary} onClick={handleHowItWorks}>
-            {showHowItWorks ? '✕' : '?'} {lang === 'tr' ? 'Nasıl çalışır?' : 'How it works?'}
+            {lang === 'tr' ? 'Nasıl çalışır?' : 'How it works?'}
           </button>
         </div>
 

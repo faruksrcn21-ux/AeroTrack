@@ -161,7 +161,7 @@ export default function SearchBar() {
   }
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-section="search">
       <div className="container">
         <div className={styles.card}>
           <div className={styles.cardHeader}>

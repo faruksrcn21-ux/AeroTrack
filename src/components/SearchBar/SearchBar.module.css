@@ -572,3 +572,25 @@
   text-align: center;
 }
 
+@media (max-width: 600px) {
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .configsRow {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+  }
+  .tripToggle, .configSelect, .passengerSelector {
+    flex: 1;
+    min-width: 120px;
+    width: 100%;
+  }
+  .passengerBtn {
+    width: 100%;
+    text-align: left;
+  }
+}
+

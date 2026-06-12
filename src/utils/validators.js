@@ -184,6 +184,21 @@ export function validateTCKimlik(tcNo) {
     return 'TC Kimlik Numarası 0 ile başlayamaz.'
   }
 
+  // Algorithmic verification
+  const digits = cleaned.split('').map(Number)
+  const oddSum  = digits[0] + digits[2] + digits[4] + digits[6] + digits[8]
+  const evenSum = digits[1] + digits[3] + digits[5] + digits[7]
+
+  const check10 = (oddSum * 7 - evenSum) % 10
+  if (check10 !== digits[9]) {
+    return 'Geçersiz TC Kimlik Numarası.'
+  }
+
+  const totalSum = digits.slice(0, 10).reduce((a, b) => a + b, 0)
+  if (totalSum % 10 !== digits[10]) {
+    return 'Geçersiz TC Kimlik Numarası.'
+  }
+
   return null
 }
 

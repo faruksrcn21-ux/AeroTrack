@@ -52,7 +52,8 @@ export default function Hero() {
         className={styles.planeImg}
         src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
         alt="Airplane in sky"
-      />
+      /> 
+      <div className={styles.overlay} />
 
       <div className={styles.content}>
         <div className={styles.badge}>

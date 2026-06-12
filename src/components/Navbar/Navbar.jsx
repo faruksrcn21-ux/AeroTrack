@@ -27,11 +27,15 @@ function SunIcon({ className }) {
 
 function MoonIcon({ className }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M21 14.5A7.5 7.5 0 0 1 9.5 3.2 6.5 6.5 0 1 0 21 14.5Z"
-      />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      aria-hidden="true"
+      fill="currentColor"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   )
 }

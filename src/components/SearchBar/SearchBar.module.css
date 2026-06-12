@@ -335,3 +335,166 @@
   background: #6c63ff;
   color: #fff;
 }
+
+/* Autocomplete dropdown styles */
+.fieldGroupRelative {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestionsDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.suggestionItem {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background var(--transition);
+  text-align: left;
+}
+
+.suggestionItem:hover {
+  background: var(--color-surface-2);
+}
+
+.suggestionTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.suggestionSubtitle {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* Configs Row (Passengers & Cabin Class) */
+.configsRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.configSelect {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition);
+}
+
+.configSelect:focus {
+  border-color: var(--color-accent);
+}
+
+.configSelect option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.passengerSelector {
+  position: relative;
+}
+
+.passengerBtn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.passengerPopup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 6px;
+  width: 220px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passengerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.passengerLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.passengerName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.passengerDesc {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+.passengerControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controlBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.controlBtn:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.controlValue {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 14px;
+  text-align: center;
+}
+

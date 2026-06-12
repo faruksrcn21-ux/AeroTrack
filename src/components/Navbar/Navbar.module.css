@@ -140,8 +140,7 @@
 }
 
 .themeIconMoon {
-  color: var(--color-accent);
-  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.35));
+  color: #1a1a1a;
 }
 
 @media (max-width: 768px) {

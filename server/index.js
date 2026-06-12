@@ -233,7 +233,7 @@ app.get('/api/flights/search', async (req, res) => {
 
 		// Step 3: Search for flights
 		const flightResponse = await axios.get(
-			'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights',
+			'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlightsComplete',
 			{
 				params: searchParams,
 				headers: {

@@ -5,6 +5,9 @@
 // ============================================
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import { useToast } from '../hooks/useToast'
+import { useLanguage } from './LanguageContext'
+import { useCurrency } from './CurrencyContext'
+import { convertCurrency } from '../utils/validators'
 
 const AppContext = createContext(null)
 
@@ -19,6 +22,8 @@ const FLIGHT_STATUSES = [
 ]
 
 export function AppProvider({ children }) {
+  const { t, lang } = useLanguage()
+  const { currency } = useCurrency()
   // Search results state
   const [flights, setFlights] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -115,11 +120,13 @@ export function AppProvider({ children }) {
         if (newPrice === flight.price) return prev
 
         const diff = newPrice - flight.price
+        const displayDiff = currency === 'TRY' ? Math.abs(diff) : convertCurrency(Math.abs(diff), currency)
+        const symbol = currency === 'TRY' ? '₺' : currency === 'USD' ? '$' : '€'
 
         if (diff < 0) {
-          toast.success(`📉 ${flight.airline} ${flight.flightNumber} price dropped by ${Math.abs(diff)} ₺!`)
+          toast.success(`📉 ${flight.airline} ${flight.flightNumber} ${t('priceDropped')} (-${symbol}${displayDiff})`)
         } else {
-          toast.warning(`📈 ${flight.airline} ${flight.flightNumber} price increased by ${diff} ₺!`)
+          toast.warning(`📈 ${flight.airline} ${flight.flightNumber} ${t('priceIncreased')} (+${symbol}${displayDiff})`)
         }
 
         const updated = [...prev]
@@ -134,7 +141,7 @@ export function AppProvider({ children }) {
     }, 30000) // Price change every 30 seconds
 
     return () => clearInterval(priceTimerRef.current)
-  }, [trackedFlights.length, toast])
+  }, [trackedFlights.length, toast, currency, t])
 
   // ══════════════════════════════════════════
   // LIVE FLIGHT STATUS SIMULATION
@@ -168,13 +175,13 @@ export function AppProvider({ children }) {
 
         // Toast notifications for status changes
         if (nextStatus.key === 'boarding') {
-          toast.info(`🚪 ${flight.airline} ${flight.flightNumber} — Boarding started! Gate: ${gate}`)
+          toast.info(`🚪 ${flight.airline} ${flight.flightNumber} — ${t('statusBoarding')}! ${t('statusGate')}: ${gate}`)
         } else if (nextStatus.key === 'delayed') {
-          toast.warning(`⏱ ${flight.airline} ${flight.flightNumber} — Flight delayed!`)
+          toast.warning(`⏱ ${flight.airline} ${flight.flightNumber} — ${t('statusDelayed')}!`)
         } else if (nextStatus.key === 'departed') {
-          toast.success(`✈ ${flight.airline} ${flight.flightNumber} — Departed!`)
+          toast.success(`✈ ${flight.airline} ${flight.flightNumber} — ${t('statusDeparted')}!`)
         } else if (nextStatus.key === 'landed') {
-          toast.success(`🛬 ${flight.airline} ${flight.flightNumber} — Landed!`)
+          toast.success(`🛬 ${flight.airline} ${flight.flightNumber} — ${t('statusLanded')}!`)
         }
 
         const updated = [...prev]

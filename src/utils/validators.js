@@ -295,18 +295,3 @@ export function validatePassengerName(name, fieldLabel = 'Bu alan') {
   }
   return null
 }
-/**
- * Passenger name validation.
- * @param {string} name
- * @param {string} fieldLabel
- * @returns {string|null}
- */
-export function validatePassengerName(name, fieldLabel = 'Bu alan') {
-  if (!name || name.trim().length < 2) {
-    return `${fieldLabel} en az 2 karakter olmalıdır.`
-  }
-  if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(name.trim())) {
-    return `${fieldLabel} yalnızca harf içermelidir.`
-  }
-  return null
-}

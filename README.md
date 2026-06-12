@@ -4,7 +4,16 @@
 
 AeroTrack; gerçek zamanlı uçuş verilerini kullanarak uçuş arama, gelişmiş filtreleme, anlık fiyat değişimi takibi (Toast uyarıları), koltuk seçimi, mock ödeme ve dijital biniş kartı (Boarding Pass) üretimi sunan premium tasarımlı bir web uygulamasıdır.
 
-![AeroTrack Platform Görünümü](screenshot.png)
+## 🖼️ Ekran Görüntüleri (Screenshots)
+
+### 1. Türkçe — Koyu Tema (Turkish — Dark Mode)
+![AeroTrack Türkçe Koyu Tema](screenshot_tr_dark.jpg)
+
+### 2. English — Dark Mode
+![AeroTrack English Dark Mode](screenshot_en_dark.jpg)
+
+### 3. English — Light Mode
+![AeroTrack English Light Mode](screenshot_en_light.jpg)
 
 ---
 

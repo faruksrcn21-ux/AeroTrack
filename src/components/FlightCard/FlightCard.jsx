@@ -59,7 +59,7 @@ function StatusBadge({ status, lang }) {
   return <span className={`${styles.statusBadge} ${s.cls}`}>{s.label}</span>
 }
 
-export default function FlightCard({ flight }) {
+export default function FlightCard({ flight, onBuyClick }) {
   const { addTracked, removeTracked, isTracked } = useAppContext()
   const { t, lang } = useLanguage()
   const { currency } = useCurrency()
@@ -171,12 +171,20 @@ export default function FlightCard({ flight }) {
             <span className={`${styles.expandChevron} ${expanded ? styles.chevronUp : ''}`}>▾</span>
           </button>
         </div>
-        <button
-          className={`${styles.trackBtn} ${tracked ? styles.trackBtnActive : ''}`}
-          onClick={handleTrackToggle}
-        >
-          {tracked ? <><span>✔</span> {t('tracking')}</> : <><span>+</span> {t('trackFlight')}</>}
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            className={styles.buyBtn}
+            onClick={() => onBuyClick && onBuyClick(flight)}
+          >
+            🎫 {t('buyTicket')}
+          </button>
+          <button
+            className={`${styles.trackBtn} ${tracked ? styles.trackBtnActive : ''}`}
+            onClick={handleTrackToggle}
+          >
+            {tracked ? <><span>✔</span> {t('tracking')}</> : <><span>+</span> {t('trackFlight')}</>}
+          </button>
+        </div>
       </div>
 
     </div>

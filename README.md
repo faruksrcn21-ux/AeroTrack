@@ -55,7 +55,7 @@ This project was developed as part of the **Kocaeli University, Software Enginee
 ```
 AeroTrack/
 ├── public/               # Static assets (Favicon, logos etc.)
-├── server/               # Express.js API Proxy Server (RapidAPI Integration)
+├── server/               # Express.js API Proxy Server (Optional API Integration)
 │   ├── data/             # Backend JSON databases (bookings)
 │   └── index.js          # Express entry point & proxy routes
 └── src/
@@ -76,7 +76,7 @@ AeroTrack/
 | Student | Git Branch | Core Responsibilities |
 | :--- | :--- | :--- |
 | **Student 1** | `feature/ui-components` | UI/UX design, CSS Modules, responsive layouts, mobile hamburger drawer menu, theme styling variables, modal animations |
-| **Student 2** | `feature/api-integration` | Express.js proxy setup, RapidAPI server-side routing, `/api/airports` and `/api/bookings` database, flight data model |
+| **Student 2** | `feature/api-integration` | Express.js proxy setup, optional API proxy server-side routing, `/api/airports` and `/api/bookings` database, flight data model |
 | **Student 3** | `feature/state-validations` | Context API state management, form validators (Turkish ID / Luhn Credit Card), Toast alerts engine, `App.jsx` integration |
 
 ---
@@ -124,17 +124,18 @@ const USE_MOCK = true; // Set to false to enable real RapidAPI fetching
 
 ---
 
-## 🔌 Live Data Integration (RapidAPI)
+## 🔌 Live Data Integration (Optional API Configuration)
 
-To run the application using live aviation data:
-1. Subscribe to the **Sky-Scrapper API** (free tier available) on [RapidAPI](https://rapidapi.com/).
-2. Add your credentials to `server/.env`:
+The platform is designed to run fully out-of-the-box using the built-in, realistic local database engine (no API keys required). If you wish to configure live aviation data feeds:
+
+1. Obtain credentials from any aviation data service (e.g. flight/airport search feeds on RapidAPI).
+2. Configure your environment variables in `server/.env`:
    ```env
-   RAPIDAPI_KEY=your_actual_rapidapi_key
-   RAPIDAPI_HOST=sky-scrapper.p.rapidapi.com
+   RAPIDAPI_KEY=your_api_key_here
+   RAPIDAPI_HOST=your_api_host_here
    PORT=3001
    ```
-3. Set Mock Mode to `false` in `src/hooks/useFlights.js`:
+3. Set the mock flag to `false` in `src/hooks/useFlights.js`:
    ```javascript
    const USE_MOCK = false;
    ```

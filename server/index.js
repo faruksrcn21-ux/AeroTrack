@@ -313,11 +313,11 @@ app.post('/api/bookings', async (req, res) => {
 			},
 			payment: payment
 				? {
-						cardLastFour: payment.cardNumber
-							? payment.cardNumber.slice(-4)
-							: '****',
-						cardHolder: payment.cardHolder || '',
-					}
+					cardLastFour: payment.cardNumber
+						? payment.cardNumber.slice(-4)
+						: '****',
+					cardHolder: payment.cardHolder || '',
+				}
 				: null,
 			seat: seat || null,
 			purchasedAt: new Date().toISOString(),

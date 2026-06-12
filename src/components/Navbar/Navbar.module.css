@@ -115,3 +115,34 @@
 .darkBtn:hover {
   background: rgba(255,255,255,0.12);
 }
+@media (max-width: 768px) {
+  .inner {
+    height: 52px;
+    padding: 0 16px;
+  }
+
+  .logoText {
+    font-size: 1.1rem;
+  }
+
+  .tag {
+    display: none;
+  }
+
+  .selector {
+    display: none;
+  }
+
+  .darkBtn {
+    display: none;
+  }
+
+  .right {
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+}

@@ -186,7 +186,7 @@ export function validateTCKimlik(tcNo) {
 
   // Algorithmic verification
   const digits = cleaned.split('').map(Number)
-  const oddSum  = digits[0] + digits[2] + digits[4] + digits[6] + digits[8]
+  const oddSum = digits[0] + digits[2] + digits[4] + digits[6] + digits[8]
   const evenSum = digits[1] + digits[3] + digits[5] + digits[7]
 
   const check10 = (oddSum * 7 - evenSum) % 10
@@ -257,7 +257,7 @@ export function validateCardExpiry(expiry) {
   if (!match) return 'Geçerli format: AA/YY'
 
   const month = parseInt(match[1], 10)
-  const year  = parseInt(match[2], 10) + 2000
+  const year = parseInt(match[2], 10) + 2000
 
   if (month < 1 || month > 12) return 'Geçersiz ay.'
 
@@ -280,6 +280,21 @@ export function validateCVV(cvv) {
   return null
 }
 
+/**
+ * Passenger name validation.
+ * @param {string} name
+ * @param {string} fieldLabel
+ * @returns {string|null}
+ */
+export function validatePassengerName(name, fieldLabel = 'Bu alan') {
+  if (!name || name.trim().length < 2) {
+    return `${fieldLabel} en az 2 karakter olmalıdır.`
+  }
+  if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(name.trim())) {
+    return `${fieldLabel} yalnızca harf içermelidir.`
+  }
+  return null
+}
 /**
  * Passenger name validation.
  * @param {string} name
